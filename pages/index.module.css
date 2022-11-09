@@ -1,0 +1,40 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  background-color: #e0a400;
+  color: rgb(255, 255, 255);
+}
+
+.createTodo {
+  transition: 0.5s;
+  /* flex: 80%; */
+  /* display: flex; */
+  justify-content: center;
+  cursor: pointer;
+}
+
+.createTodo:hover {
+  color: rgb(0, 247, 255);
+}
+.logout {
+  position: fixed;
+  right: 30px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  color: rgb(255, 99, 99);
+}
+
+.login {
+  position: fixed;
+  right: 30px;
+  cursor: pointer;
+}
+
+.login:hover {
+  color: rgb(0, 247, 255);
+}
