@@ -3,12 +3,12 @@ import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import styles from "./css/createTodo.module.css";
 
-export default function CreateTodo() {
+export default function CreateTodo({ setIsModalOpen }) {
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
   const postTodo = async () => {
     await addDoc(collection(db, "todos"), {
-      todo: title,
+      title: title,
       detail: detail,
       author: {
         username: auth.currentUser.displayName,
@@ -16,6 +16,7 @@ export default function CreateTodo() {
         photoURL: auth.currentUser.photoURL,
       },
     });
+    setIsModalOpen(false);
   };
 
   return (

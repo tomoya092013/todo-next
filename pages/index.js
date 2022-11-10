@@ -6,10 +6,12 @@ import TodoList from "./components/TodoList";
 import styles from "./index.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Button } from "@mui/material";
+import Modal from "react-modal";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
@@ -40,14 +42,27 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <div className={styles.createTodo}>{/* <CreateTodo /> */}</div>
+              <div
+                className={styles.createTodo}
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                Todo登録
+              </div>
+              <Modal isOpen={isModalOpen} className={styles.modal}>
+                <button onClick={() => setIsModalOpen(false)}>
+                  Modal閉じる
+                </button>
+                <CreateTodo setIsModalOpen={setIsModalOpen} />
+              </Modal>
+
               <div className={styles.logout} onClick={logout}>
                 ログアウト
               </div>
             </>
           )}
         </div>
-
         <TodoList />
       </Layout>
     </>
