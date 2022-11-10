@@ -6,12 +6,17 @@ import TodoList from "./components/TodoList";
 import styles from "./index.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Button } from "@mui/material";
 import Modal from "react-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faPencil,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const router = useRouter();
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
@@ -32,29 +37,50 @@ export default function Home() {
     });
   };
 
+  const customStyles = {
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      backgroundColor: "rgba(0,0,0,0.3)",
+    },
+
+    content: {
+      height: "400px",
+    },
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <>
       <Layout>
         <div className={styles.nav}>
           {!isAuth ? (
             <div className={styles.login} onClick={loginWithGoogle}>
+              <FontAwesomeIcon icon={faPencil} className={styles.icon} />
               ログイン
             </div>
           ) : (
             <>
-              <div
-                className={styles.createTodo}
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-              >
+              <div className={styles.createTodo} onClick={openModal}>
                 Todo登録
               </div>
-              <Modal isOpen={isModalOpen} className={styles.modal}>
-                <button onClick={() => setIsModalOpen(false)}>
+              <Modal
+                isOpen={modalIsOpen}
+                closeModal={closeModal}
+                style={customStyles}
+              >
+                <button onClick={() => setModalIsOpen(false)}>
                   Modal閉じる
                 </button>
-                <CreateTodo setIsModalOpen={setIsModalOpen} />
+                <CreateTodo closeModal={closeModal} />
               </Modal>
 
               <div className={styles.logout} onClick={logout}>

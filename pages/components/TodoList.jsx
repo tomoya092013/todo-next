@@ -1,18 +1,34 @@
 import { useEffect, useState } from "react";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function TodoList() {
-  const [todoList, srtTodoList] = useState([]);
+  const [todoList, setTodoList] = useState([]);
   useEffect(() => {
-    const getTodos = async () => {
-      const data = await getDocs(collection(db, "todos"));
-      console.log(data.docs);
-      console.log(data.docs.map((doc) => ({ doc })));
-      console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      srtTodoList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getTodos();
+    // const getTodos = async () => {
+    //   const data = await getDocs(collection(db, "todos"));
+    //   console.log(data.docs);
+    //   console.log(data.docs.map((doc) => ({ doc })));
+    //   console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    //   setTodoList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+
+    const data = query(collection(db, "todos"), orderBy("updatedAt", "desc"));
+    const onSnapTodo = onSnapshot(data, (querySnapshot) => {
+      setTodoList(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+      console.log(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+    return onSnapTodo;
   }, []);
 
   const handleDelete = async (id) => {
@@ -20,7 +36,7 @@ export default function TodoList() {
   };
 
   return (
-    <div clasName="todoLists">
+    <div className="todoLists">
       {todoList.map((todo) => {
         return (
           <div className="todoContents" key={todo.id}>

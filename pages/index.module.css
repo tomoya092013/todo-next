@@ -6,14 +6,16 @@
   width: 100%;
   background-color: #e0a400;
   color: rgb(255, 255, 255);
+  font-size: 5px;
 }
 
 .createTodo {
   transition: 0.5s;
   /* flex: 80%; */
   /* display: flex; */
-  justify-content: center;
+  /* justify-content: center; */
   cursor: pointer;
+  font-size: 10px;
 }
 
 .createTodo:hover {
@@ -30,22 +32,20 @@
 }
 
 .login {
+  display: flex;
   position: fixed;
+  /* justify-content: flex-end; */
   right: 30px;
   cursor: pointer;
+  width: 80px;
+  height: 40px;
+}
+
+.icon {
+  font-size: 1em !important;
+  size: 10px;
 }
 
 .login:hover {
   color: rgb(0, 247, 255);
-}
-
-.modal {
-  background-color: rgb(19, 23, 22);
-  /* top: 50%; */
-  /* left: 50%; */
-  /* right: auto; */
-  /* bottom: auto; */
-  /* margin-right: auto; */
-  transform: translate(25%, 25%);
-  /* width: 40%; */
 }
