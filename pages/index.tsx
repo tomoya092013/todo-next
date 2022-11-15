@@ -4,7 +4,6 @@ import Layout from "./components/Layout";
 import CreateTodo from "./components/CreateTodo";
 import TodoList from "./components/TodoList";
 import styles from "./index.module.css";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,14 +12,15 @@ import {
   faPencil,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const [isAuth, setIsAuth] = useState();
+  const [isAuth, setIsAuth] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const router = useRouter();
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
-      localStorage.setItem("isAuth", true);
+      localStorage.setItem("isAuth", "true");
       setIsAuth(true);
       router.push("/");
     });
