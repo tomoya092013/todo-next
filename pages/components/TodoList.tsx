@@ -9,8 +9,22 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
+type Todo = {
+  id: string;
+  title: string;
+  detail: string;
+  deadline: Date;
+  author: {
+    username: string;
+    id: number;
+    photoURL: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export default function TodoList() {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState<Todo[] | []>([]);
   useEffect(() => {
     // const getTodos = async () => {
     //   const data = await getDocs(collection(db, "todos"));
@@ -21,17 +35,12 @@ export default function TodoList() {
 
     const data = query(collection(db, "todos"), orderBy("updatedAt", "desc"));
     const onSnapTodo = onSnapshot(data, (querySnapshot) => {
-      setTodoList(
-        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
-      console.log(
-        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+        // setTodoList();
     });
     return onSnapTodo;
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "todos", id));
   };
 
@@ -41,6 +50,7 @@ export default function TodoList() {
         return (
           <div className="todoContents" key={todo.id}>
             <div>{todo.title}</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={todo.author.photoURL}
               width={64}
