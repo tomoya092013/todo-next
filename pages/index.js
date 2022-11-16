@@ -8,11 +8,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHouse,
-  faPencil,
-  faRightToBracket,
-} from "@fortawesome/free-solid-svg-icons";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState();
@@ -64,7 +60,7 @@ export default function Home() {
         <div className={styles.nav}>
           {!isAuth ? (
             <div className={styles.login} onClick={loginWithGoogle}>
-              <FontAwesomeIcon icon={faPencil} className={styles.icon} />
+              <FontAwesomeIcon icon={faRightToBracket} />
               ログイン
             </div>
           ) : (
@@ -76,6 +72,7 @@ export default function Home() {
                 isOpen={modalIsOpen}
                 closeModal={closeModal}
                 style={customStyles}
+                ariaHideApp={false}
               >
                 <button onClick={() => setModalIsOpen(false)}>
                   Modal閉じる

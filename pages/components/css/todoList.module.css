@@ -1,0 +1,26 @@
+.todoContents {
+  /* display: flex; */
+}
+
+.icon {
+  width: 24px;
+  color: rgb(135, 135, 135);
+  transition: 0.3s;
+}
+
+.icon:hover {
+  width: 24px;
+  color: rgb(255, 43, 43);
+}
+
+.title {
+  display: flex;
+}
+
+.createDate {
+  display: flex;
+}
+
+.updateTime {
+  margin: auto;
+}

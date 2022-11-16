@@ -1,5 +1,4 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import dayjs from "dayjs";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,7 +12,7 @@ import { useState } from "react";
 export default function CreateTodo({ closeModal }) {
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [deadline, setDeadline] = useState(new Date());
   // const [value, setValue] = useState(dayjs("2014-08-18T21:11:54"));
   const postTodo = async () => {
     await addDoc(collection(db, "todos"), {
@@ -42,7 +41,7 @@ export default function CreateTodo({ closeModal }) {
           <input
             type="text"
             id="todo"
-            placeholder="Todoを記入"
+            placeholder="Todoを記入（必須項目）"
             onChange={(e) => setTitle(e.target.value)}
             className={styles.input}
           />
@@ -59,17 +58,25 @@ export default function CreateTodo({ closeModal }) {
             className={styles.textarea}
           />
         </div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack spacing={3}>
-            <DesktopDatePicker
-              label="期限"
-              inputFormat="YYYY/MM/DD"
-              value={deadline}
-              onChange={(e) => setDeadline(e)}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </Stack>
-        </LocalizationProvider>
+        <div className={styles.deadline}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Stack spacing={3}>
+              <DesktopDatePicker
+                label="期限"
+                inputFormat="YYYY/MM/DD"
+                value={deadline}
+                onChange={(e) => {
+                  // console.log(e);
+                  const date = new Date(e);
+                  // console.log(date);
+                  setDeadline(date);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </Stack>
+          </LocalizationProvider>
+        </div>
+
         <button className="postButton" onClick={postTodo}>
           投稿する
         </button>
