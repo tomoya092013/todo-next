@@ -1,26 +1,48 @@
-.todoContents {
-  /* display: flex; */
+.todoArea {
+  margin: 74px 20px 16px 20px;
 }
 
-.icon {
+.todoContents {
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 8px 8px 10px 5px #35314e;
+  border-radius: 20px;
+  background-color: #dcfefd;
+}
+
+.todoTitle {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  margin-right: 16px;
+  width: 20px;
+  height: 20px;
+}
+
+.underContent {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.avater {
+  margin-top: 4px;
+}
+
+.deadline {
+  margin: 0 14px;
+}
+
+.trash {
   width: 24px;
   color: rgb(135, 135, 135);
   transition: 0.3s;
 }
 
-.icon:hover {
-  width: 24px;
+.trash:hover {
+  width: 30px;
   color: rgb(255, 43, 43);
-}
-
-.title {
-  display: flex;
-}
-
-.createDate {
-  display: flex;
-}
-
-.updateTime {
-  margin: auto;
 }

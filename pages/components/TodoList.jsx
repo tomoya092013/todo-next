@@ -41,29 +41,33 @@ export default function TodoList() {
   }, []);
 
   return (
-    <div className={styles.todoLists}>
+    <div className={styles.todoArea}>
       {todoList.map((todo) => {
         const deadline = dayjs(todo.deadline.toDate());
         return (
           <div className={styles.todoContents} key={todo.id}>
-            <div className={styles.title}>
-              <input type="checkbox" />
+            <div className={styles.todoTitle}>
+              <input type="checkbox" className={styles.checkbox} />
               <div>{todo.title}</div>
             </div>
-            <div className={styles.createDate}>
+            <hr></hr>
+            <div className={styles.underContent}>
               <ListItemAvatar>
                 <Avatar
                   src={todo.author.photoURL}
                   alt="Author Avatar"
                   sx={{ width: 48, height: 48 }}
+                  className={styles.avater}
                 />
               </ListItemAvatar>
-              <time datetime={deadline.format("YYYY-MM-DDTHH:mm")}>
-                {deadline.format("YYYY-MM-DD")}
-              </time>
-              <button onClick={() => handleDelete(todo.id)}>
-                <FontAwesomeIcon icon={faTrash} className={styles.icon} />
-              </button>
+              <div className={styles.deadline}>
+                期限：{deadline.format("YYYY/MM/DD")}
+              </div>
+              <FontAwesomeIcon
+                icon={faTrash}
+                className={styles.trash}
+                onClick={() => handleDelete(todo.id)}
+              />
             </div>
           </div>
         );

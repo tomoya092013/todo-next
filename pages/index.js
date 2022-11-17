@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRightToBracket,
+  faPencil,
+  faPersonRunning,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState();
@@ -58,15 +62,23 @@ export default function Home() {
     <>
       <Layout>
         <div className={styles.nav}>
+          <h2 className={styles.appTitle}>Todoリスト</h2>
           {!isAuth ? (
             <div className={styles.login} onClick={loginWithGoogle}>
-              <FontAwesomeIcon icon={faRightToBracket} />
-              ログイン
+              <p>ログイン</p>
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                className={styles.loginIcon}
+              />
             </div>
           ) : (
             <>
-              <div className={styles.createTodo} onClick={openModal}>
-                Todo登録
+              <div className={styles.cteateTodo} onClick={openModal}>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  className={styles.createIcon}
+                />
+                <div>Todo登録</div>
               </div>
               <Modal
                 isOpen={modalIsOpen}
@@ -79,9 +91,12 @@ export default function Home() {
                 </button>
                 <CreateTodo closeModal={closeModal} />
               </Modal>
-
               <div className={styles.logout} onClick={logout}>
-                ログアウト
+                <FontAwesomeIcon
+                  icon={faPersonRunning}
+                  className={styles.logoutIcon}
+                />
+                <div>ログアウト</div>
               </div>
             </>
           )}
