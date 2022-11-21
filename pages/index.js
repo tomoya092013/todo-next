@@ -1,8 +1,8 @@
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, provider } from "./firebase";
-import Layout from "./components/Layout";
-import CreateTodo from "./components/CreateTodo";
-import TodoList from "./components/TodoList";
+import { auth, provider } from "../firebase";
+import Layout from "../components/Layout";
+import CreateTodo from "../components/CreateTodo";
+import TodoList from "../components/TodoList";
 import styles from "./index.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";

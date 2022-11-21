@@ -4,22 +4,27 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import styles from "./css/editTodo.module.css";
+import styles from "../../editTodo.module.css";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../../firebase";
+import { useRouter } from "next/router";
 
 export default function EditTodo({ closeModal, editTodoID }) {
+  const router = useRouter();
+  const id = router.query.id as string;
+
   useEffect(() => {
     const getTodo = async () => {
-      const docRef = doc(db, "todos", editTodoID);
+      const docRef = doc(db, "todos", id);
       const docSnap = await getDoc(docRef);
       const todoData = docSnap.data();
       console.log(todoData);
     };
     getTodo();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
-  // const [title, setTitle] = useState(todoData.title);
+  const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
   const [deadline, setDeadline] = useState(new Date());
 
@@ -46,7 +51,7 @@ export default function EditTodo({ closeModal, editTodoID }) {
         <div>
           <label htmlFor="detail">詳細:</label>
           <textarea
-            type="text"
+            // type="text"
             id="detail"
             placeholder="詳細を記入"
             onChange={(e) => setDetail(e.target.value)}

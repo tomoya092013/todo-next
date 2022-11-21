@@ -6,6 +6,8 @@ import {
   onSnapshot,
   orderBy,
   query,
+  QuerySnapshot,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
@@ -15,17 +17,33 @@ import styles from "./css/todoList.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import dayjs from "dayjs";
-import EditTodo from "./EditTodo";
+// import EditTodo from "./EditTodo";
 import Modal from "react-modal";
+import { useRouter } from "next/router";
+
+type Todo = {
+  id: string;
+  title: string;
+  detail: string;
+  createdAt: Date;
+  deadline: Timestamp;
+  updatedAt: Date;
+  author: {
+    id: string;
+    username: string;
+    photoURL: string;
+  };
+};
 
 export default function TodoList({ isAuth }) {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState<Todo[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [editTodoID, setEditTodoID] = useState();
+  const [editTodoID, setEditTodoID] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const data = query(collection(db, "todos"), orderBy("updatedAt", "desc"));
-    const onSnapTodo = onSnapshot(data, (querySnapshot) => {
+    const onSnapTodo = onSnapshot(data, (querySnapshot: QuerySnapshot<Todo>) => {
       setTodoList(
         querySnapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -57,13 +75,18 @@ export default function TodoList({ isAuth }) {
     setModalIsOpen(false);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "todos", id));
   };
 
-  const editTodo = (id) => {
+  const editTodo = (id: string) => {
     setEditTodoID(id);
     openModal();
+  };
+
+  const getTargetEditTodo = (id: string) => {
+    const targetTodo =  todoList.find((todo) => id === todo.id);
+    // targetTodoをグローバルなstateとして保持する処理
   };
 
   return (
@@ -76,7 +99,10 @@ export default function TodoList({ isAuth }) {
               <input type="checkbox" className={styles.checkbox} />
               <div
                 className={styles.editTodo}
-                onClick={() => editTodo(todo.id)}
+                onClick={() => {
+                  getTargetEditTodo(todo.id);
+                  router.push(`/todo/${todo.id}/edit`);
+                }}
               >
                 {todo.title}
               </div>
@@ -85,7 +111,7 @@ export default function TodoList({ isAuth }) {
                 style={customStyles}
                 ariaHideApp={false}
               >
-                <EditTodo closeModal={closeModal} editTodoID={editTodoID} />
+                {/* <EditTodo closeModal={closeModal} editTodoID={editTodoID} /> */}
               </Modal>
             </div>
             <hr></hr>
