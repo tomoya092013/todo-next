@@ -8,6 +8,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { auth, db } from "../firebase";
 import styles from "./css/createTodo.module.css";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreateTodo({ closeModal }) {
   const [title, setTitle] = useState("");
@@ -33,6 +35,11 @@ export default function CreateTodo({ closeModal }) {
   return (
     <>
       <div className={styles.todoContainer}>
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          className={styles.modalCloseButton}
+          onClick={() => closeModal()}
+        />
         <div className={styles.title}>
           <label htmlFor="todo" className={styles.label}>
             Todo:

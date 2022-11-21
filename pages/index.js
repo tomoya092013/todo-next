@@ -10,9 +10,10 @@ import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightToBracket,
-  faPencil,
+  faFilePen,
   faPersonRunning,
 } from "@fortawesome/free-solid-svg-icons";
+import Avatar from "@mui/material/Avatar";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState();
@@ -40,13 +41,13 @@ export default function Home() {
   const customStyles = {
     overlay: {
       position: "fixed",
-      top: 0,
+      top: 50,
       left: 0,
       backgroundColor: "rgba(0,0,0,0.3)",
     },
 
     content: {
-      height: "400px",
+      height: "350px",
     },
   };
 
@@ -62,7 +63,17 @@ export default function Home() {
     <>
       <Layout>
         <div className={styles.nav}>
-          <h2 className={styles.appTitle}>Todoリスト</h2>
+          <h2 className={styles.appTitle}>
+            {isAuth && (
+              <Avatar
+                src={auth.currentUser.photoURL}
+                alt="Author Avatar"
+                sx={{ width: 36, height: 36 }}
+                // className={styles.avater}
+              />
+            )}
+            Todoリスト
+          </h2>
           {!isAuth ? (
             <div className={styles.login} onClick={loginWithGoogle}>
               <p>ログイン</p>
@@ -75,20 +86,16 @@ export default function Home() {
             <>
               <div className={styles.cteateTodo} onClick={openModal}>
                 <FontAwesomeIcon
-                  icon={faPencil}
+                  icon={faFilePen}
                   className={styles.createIcon}
                 />
-                <div>Todo登録</div>
               </div>
               <Modal
                 isOpen={modalIsOpen}
-                closeModal={closeModal}
                 style={customStyles}
                 ariaHideApp={false}
+                onRequestClose={closeModal}
               >
-                <button onClick={() => setModalIsOpen(false)}>
-                  Modal閉じる
-                </button>
                 <CreateTodo closeModal={closeModal} />
               </Modal>
               <div className={styles.logout} onClick={logout}>
@@ -96,12 +103,11 @@ export default function Home() {
                   icon={faPersonRunning}
                   className={styles.logoutIcon}
                 />
-                <div>ログアウト</div>
               </div>
             </>
           )}
         </div>
-        <TodoList />
+        <TodoList isAuth={isAuth} />
       </Layout>
     </>
   );

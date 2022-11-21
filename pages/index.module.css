@@ -13,7 +13,10 @@
 }
 
 .appTitle {
+  display: flex;
+  align-items: center;
   font-size: 24px;
+  gap: 2px;
 }
 
 .login {
@@ -43,15 +46,15 @@
 }
 
 .createIcon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   margin-right: 4px;
   transition: 0.3s;
 }
 
 .createIcon:hover {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   color: rgb(0, 247, 255);
 }
 
@@ -70,7 +73,7 @@
 
 .logoutIcon:hover {
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   color: rgb(255, 81, 23);
 }

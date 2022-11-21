@@ -6,6 +6,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -14,12 +15,13 @@ import styles from "./css/todoList.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import dayjs from "dayjs";
+import EditTodo from "./EditTodo";
+import Modal from "react-modal";
 
-export default function TodoList() {
+export default function TodoList({ isAuth }) {
   const [todoList, setTodoList] = useState([]);
-  const handleDelete = async (id) => {
-    await deleteDoc(doc(db, "todos", id));
-  };
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editTodoID, setEditTodoID] = useState();
 
   useEffect(() => {
     const data = query(collection(db, "todos"), orderBy("updatedAt", "desc"));
@@ -30,15 +32,39 @@ export default function TodoList() {
           id: doc.id,
         }))
       );
-      console.log(
-        querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-      );
     });
     return onSnapTodo;
   }, []);
+
+  const customStyles = {
+    overlay: {
+      position: "fixed",
+      top: 50,
+      left: 0,
+      backgroundColor: "rgba(0,0,0,0.3)",
+    },
+
+    content: {
+      height: "350px",
+    },
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, "todos", id));
+  };
+
+  const editTodo = (id) => {
+    setEditTodoID(id);
+    openModal();
+  };
 
   return (
     <div className={styles.todoArea}>
@@ -48,7 +74,19 @@ export default function TodoList() {
           <div className={styles.todoContents} key={todo.id}>
             <div className={styles.todoTitle}>
               <input type="checkbox" className={styles.checkbox} />
-              <div>{todo.title}</div>
+              <div
+                className={styles.editTodo}
+                onClick={() => editTodo(todo.id)}
+              >
+                {todo.title}
+              </div>
+              <Modal
+                isOpen={modalIsOpen}
+                style={customStyles}
+                ariaHideApp={false}
+              >
+                <EditTodo closeModal={closeModal} editTodoID={editTodoID} />
+              </Modal>
             </div>
             <hr></hr>
             <div className={styles.underContent}>
@@ -63,11 +101,13 @@ export default function TodoList() {
               <div className={styles.deadline}>
                 期限：{deadline.format("YYYY/MM/DD")}
               </div>
-              <FontAwesomeIcon
-                icon={faTrash}
-                className={styles.trash}
-                onClick={() => handleDelete(todo.id)}
-              />
+              {isAuth && (
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className={styles.trash}
+                  onClick={() => handleDelete(todo.id)}
+                />
+              )}
             </div>
           </div>
         );
